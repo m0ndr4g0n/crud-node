@@ -3,7 +3,7 @@ const handlebars = require ('express-handlebars')
 const bodyparser = require ('body-parser')
 const bodyParser = require('body-parser')
 const app = express()
-
+const admin = require('./routes/admin')
 //const mongoose = require ('mongoose')
 
 // configurações
@@ -15,7 +15,10 @@ const app = express()
     app.set('view engine', 'handlebars')
     // mongoose
 // rotas
-
+    app.get('/', (req,res) =>{
+        res.send('Home page.')
+    })
+    app.use('/admin', admin)
 // outros
 const PORT = 8081
 app.listen(PORT, () =>{
