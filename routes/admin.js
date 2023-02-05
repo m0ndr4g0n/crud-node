@@ -24,6 +24,15 @@ router.get('/categorias/add', (req,res) =>{
     res.render('./admin/addcategorias')
 })
 
+router.get('/categorias/edit/:id', (req,res) =>{
+    Categoria.findOne({_id:req.params.id}).lean().then((categorias) =>{
+        res.render("./admin/editcategorias", {categorias: categorias})
+    }).catch((err)=>{
+        req.flash("error_msg", "Essa categoria não existe")
+        res.redirect("/admin/categorias")
+    })
+})
+
 router.post('/categorias/nova', (req,res) =>{
 
     let erros = []
@@ -52,6 +61,7 @@ router.post('/categorias/nova', (req,res) =>{
     new Categoria(novaCategoria).save().then(() => {
         req.flash("success_msg", "Categoria criada com sucesso!")
         res.render('./admin/categorias',({success_msg: req.flash('success_msg')}))
+
     }).catch((err) =>{
         req.flash("error_msg", "Houve um erro ao tentar salvar a categoria, tente novamente.")
         console.log('Erro ao salvar categoria: ' + err)
